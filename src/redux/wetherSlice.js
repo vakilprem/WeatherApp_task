@@ -4,12 +4,13 @@ import axios from "axios";
 const API_KEY = import.meta.env.VITE_APP_ID;
 const BASE_URL = import.meta.env.VITE_APP_API;
 
+const buildWeatherUrl = (endpoint, city) =>
+  `${BASE_URL}${endpoint}?q=${city}&appid=${API_KEY}&units=metric`;
+
 export const fetchCurrentWeather = createAsyncThunk(
   "weather/fetchCurrentWeather",
   async (city) => {
-    const res = await axios.get(
-      `${BASE_URL}${city}&appid=${API_KEY}&units=metric`
-    );
+    const res = await axios.get(buildWeatherUrl("weather", city));
     return res.data;
   }
 );
@@ -17,9 +18,7 @@ export const fetchCurrentWeather = createAsyncThunk(
 export const fetchForecast = createAsyncThunk(
   "weather/fetchForecast",
   async (city) => {
-    const res = await axios.get(
-      `${BASE_URL}forecast?q=${city}&appid=${API_KEY}&units=metric`
-    );
+    const res = await axios.get(buildWeatherUrl("forecast", city));
     return res.data;
   }
 );
